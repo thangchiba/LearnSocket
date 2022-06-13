@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 namespace TestSocket
 {
@@ -9,6 +10,7 @@ namespace TestSocket
 	{
         IPEndPoint IP;
         Socket server;
+        UdpClient udpServer;
         List<Socket> listClient = new List<Socket>();
         public void CreateServer()
         {
@@ -23,7 +25,7 @@ namespace TestSocket
                         server.Listen(100);
                         Socket client = server.Accept();
                         listClient.Add(client);
-                        Thread receiveThread = new Thread(Receive);
+                        Thread receiveThread = new Thread(TCPServerProc);
                         receiveThread.IsBackground = true;
                         receiveThread.Start(client);
                         Console.WriteLine("Co client ket noi");
@@ -37,15 +39,21 @@ namespace TestSocket
             });
             listenThread.IsBackground = true;
             listenThread.Start();
-            Console.WriteLine("Đã khởi tạo server");
-            Console.WriteLine("Địa chỉ IP : " + IP.Address + "--- Port : " + IP.Port);
+
+
+            udpServer = new UdpClient(1995);
+            var udpThread = new Thread(UDPServerProc);
+            udpThread.IsBackground = true;
+            udpThread.Name = "UDP server thread";
+            udpThread.Start(udpServer);
 
         }
-        public void Receive(Object obj)
+        public void TCPServerProc(Object obj)
         {
             Socket client = obj as Socket;
             try
             {
+                Console.WriteLine("Đã khởi tạo server TCP");
                 while (true)
                 {
                     byte[] data = new byte[1024];
@@ -62,6 +70,34 @@ namespace TestSocket
                 Console.WriteLine("co client ngat ket noi");
             }
         }
+
+        private void UDPServerProc(object arg)
+        {
+            Console.WriteLine("UDP server thread started");
+
+            try
+            {
+                UdpClient server = (UdpClient)arg;
+                IPEndPoint remoteEP;
+                byte[] buffer;
+
+                while(true)
+                {
+                    remoteEP = null;
+                    buffer = server.Receive(ref remoteEP);
+                    MessageContent message = (MessageContent)Deserialize(buffer);
+                    SendToAllClient(message);
+                    AddMessage(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UDPServerProc exception: " + ex);
+                Console.WriteLine("UDP server thread finished");
+            }
+
+        }
+
 
         public void Send(Socket client, MessageContent message)
         {

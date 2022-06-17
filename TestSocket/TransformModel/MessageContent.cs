@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Runtime.Serialization.Formatters.Binary;
+
 namespace TestSocket
 {
     [Serializable]
-    public class MessageContent
+    public class MessageContent : TransformModel
     {
         private String name;
         private String content;

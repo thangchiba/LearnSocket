@@ -56,7 +56,7 @@ namespace TestSocket
                 {
                     byte[] data = new byte[1024];
                     client.Receive(data);
-                    MessageContent message = (MessageContent)Deserialize(data);
+                    MessageContent message = (MessageContent)data.Deserialize();
                     SendToAllClient(message);
                     AddMessage(message);
                 }
@@ -81,7 +81,7 @@ namespace TestSocket
                 {
                     remoteEP = null;
                     buffer = server.Receive(ref remoteEP);
-                    MessageContent message = (MessageContent)Deserialize(buffer);
+                    MessageContent message = (MessageContent)buffer.Deserialize();
                     SendToAllClient(message);
                     AddMessage(message);
                 }
@@ -94,36 +94,6 @@ namespace TestSocket
 
         }
 
-
-        public void Send(Socket client, MessageContent message)
-        {
-            if (message.Content != String.Empty)
-                client.Send(Serialize(message));
-            byte[] checkbytearray = Serialize(message);
-            Console.WriteLine(checkbytearray.Length);
-        }
-
-        public void AddMessage(MessageContent message)
-        {
-            Console.WriteLine(message.Name + " : " + message.Content);
-        }
-
-        byte[] Serialize(Object obj)
-        {
-            MemoryStream stream = new MemoryStream();
-            BinaryFormatter bf = new BinaryFormatter();
-            bf.Serialize(stream, obj);
-            return stream.ToArray();
-        }
-
-        Object Deserialize(byte[] byteArray)
-        {
-            MemoryStream stream = new MemoryStream(byteArray);
-            BinaryFormatter bf = new BinaryFormatter();
-            return bf.Deserialize(stream);
-        }
-
-
         public void SendToAllClient(MessageContent message)
         {
             foreach (Socket client in listClient)
@@ -131,6 +101,16 @@ namespace TestSocket
                 Send(client, message);
             }
         }
+
+        public void Send(Socket client, MessageContent message)
+        {
+            if (message.Content != String.Empty)
+                client.Send(message.Serialize());
+        }
+
+        public void AddMessage(MessageContent message)
+        {
+            Console.WriteLine(message.Name + " : " + message.Content);
+        }
     }
 }
-

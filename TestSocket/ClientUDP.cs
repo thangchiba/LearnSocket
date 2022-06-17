@@ -16,7 +16,6 @@
             public void Connect()
             {
                 IP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1995);
-                //client = new UdpClient(1995);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 try
                 {
@@ -29,7 +28,6 @@
                 }
                 catch
                 {
-
                     Console.WriteLine("khong the ket noi sv");
                 }
             }

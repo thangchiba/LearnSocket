@@ -9,8 +9,12 @@
 
   <ItemGroup>
     <None Remove="System.Net.Sockets" />
+    <None Remove="TransformModel\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TransformModel\" />
   </ItemGroup>
 </Project>

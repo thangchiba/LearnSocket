@@ -9,7 +9,7 @@
 
     namespace TestSocket
     {
-        public class Client
+        public class ClientTCP
         {
             IPEndPoint IP;
             Socket client;
@@ -27,18 +27,9 @@
                 }
                 catch
                 {
-
                     Console.WriteLine("khong the ket noi sv");
                 }
             }
-
-            public void Send(MessageContent message)
-            {
-                if (message.Content != String.Empty)
-                    client.Send(Serialize(message));
-                //AddMessage(message);
-            }
-
             public void Receive()
             {
                 try
@@ -47,7 +38,7 @@
                     {
                         byte[] data = new byte[1024];
                         client.Receive(data);
-                        MessageContent message = (MessageContent)Deserialize(data);
+                        MessageContent message = (MessageContent)data.Deserialize();
                         AddMessage(message);
                     }
                 }
@@ -59,24 +50,16 @@
 
             }
 
+
+            public void Send(MessageContent message)
+            {
+                if (message.Content != String.Empty)
+                    client.Send(message.Serialize());
+                AddMessage(message);
+            }
             public void AddMessage(MessageContent message)
             {
                 Console.WriteLine(message.Name + " : " + message.Content);
-            }
-
-            byte[] Serialize(Object obj)
-            {
-                MemoryStream stream = new MemoryStream();
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(stream, obj);
-                return stream.ToArray();
-            }
-
-            Object Deserialize(byte[] byteArray)
-            {
-                MemoryStream stream = new MemoryStream(byteArray);
-                BinaryFormatter bf = new BinaryFormatter();
-                return bf.Deserialize(stream);
             }
         }
     }

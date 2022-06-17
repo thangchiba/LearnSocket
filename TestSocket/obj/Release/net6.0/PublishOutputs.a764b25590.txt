@@ -1,5 +1,0 @@
-/Users/hoangthang/Desktop/WorkSpace/C#/LearnSocket/Release/ClientTCP/TestSocket
-/Users/hoangthang/Desktop/WorkSpace/C#/LearnSocket/Release/ClientTCP/TestSocket.dll
-/Users/hoangthang/Desktop/WorkSpace/C#/LearnSocket/Release/ClientTCP/TestSocket.deps.json
-/Users/hoangthang/Desktop/WorkSpace/C#/LearnSocket/Release/ClientTCP/TestSocket.runtimeconfig.json
-/Users/hoangthang/Desktop/WorkSpace/C#/LearnSocket/Release/ClientTCP/TestSocket.pdb

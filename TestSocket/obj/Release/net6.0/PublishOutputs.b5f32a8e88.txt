@@ -1,5 +1,0 @@
-/Users/hoangthang/Desktop/WorkSpace/C#/TestSocket/Release/TestSocket
-/Users/hoangthang/Desktop/WorkSpace/C#/TestSocket/Release/TestSocket.dll
-/Users/hoangthang/Desktop/WorkSpace/C#/TestSocket/Release/TestSocket.deps.json
-/Users/hoangthang/Desktop/WorkSpace/C#/TestSocket/Release/TestSocket.runtimeconfig.json
-/Users/hoangthang/Desktop/WorkSpace/C#/TestSocket/Release/TestSocket.pdb

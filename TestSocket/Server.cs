@@ -6,18 +6,16 @@ using System.Text;
 
 namespace TestSocket
 {
-	public class Server
-	{
-        IPEndPoint IP;
-        Socket server;
-        UdpClient udpServer;
+    public class Server
+    {
         List<Socket> listClient = new List<Socket>();
         public void CreateServer()
         {
-            IP = new IPEndPoint(IPAddress.Any, 1995);
-            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint IP = new IPEndPoint(IPAddress.Any, 1995);
+            Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             server.Bind(IP);
-            Thread listenThread = new Thread(() => {
+            Thread listenThread = new Thread(() =>
+            {
                 try
                 {
                     while (true)
@@ -41,7 +39,7 @@ namespace TestSocket
             listenThread.Start();
 
 
-            udpServer = new UdpClient(1995);
+            UdpClient udpServer = new UdpClient(1995);
             var udpThread = new Thread(UDPServerProc);
             udpThread.IsBackground = true;
             udpThread.Name = "UDP server thread";
@@ -53,7 +51,7 @@ namespace TestSocket
             Socket client = obj as Socket;
             try
             {
-                Console.WriteLine("Đã khởi tạo server TCP");
+                Console.WriteLine("TCP server thread started");
                 while (true)
                 {
                     byte[] data = new byte[1024];
@@ -74,14 +72,12 @@ namespace TestSocket
         private void UDPServerProc(object arg)
         {
             Console.WriteLine("UDP server thread started");
-
             try
             {
                 UdpClient server = (UdpClient)arg;
                 IPEndPoint remoteEP;
                 byte[] buffer;
-
-                while(true)
+                while (true)
                 {
                     remoteEP = null;
                     buffer = server.Receive(ref remoteEP);
